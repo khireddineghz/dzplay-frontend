@@ -1,0 +1,32 @@
+@import "tailwindcss";
+
+@theme {
+  --font-display: "Lexend", "sans-serif";
+  --font-sans: "Lexend", "sans-serif";
+
+  --color-primary: #7c3aed;
+  --color-primary-hover: #6d28d9;
+  --color-primary-dark: #6d28d9;
+
+  --color-background-light: #f8f5ff;
+  --color-background-dark: #1a1033;
+
+  --color-surface-light: #ffffff;
+  --color-surface-dark: #2d1b4e;
+  --color-surface-dark-highlight: #302839;
+
+  --color-text-secondary: #ab9db9;
+
+  --radius-lg: 0.5rem;
+  --radius-xl: 0.75rem;
+  --radius-2xl: 1rem;
+
+  --background-image-field-texture: linear-gradient(rgba(20, 17, 24, 0.92), rgba(20, 17, 24, 0.95)), url('https://images.unsplash.com/photo-1555862124-a4ebf04cd250?q=80&w=2000&auto=format&fit=crop');
+}
+
+@layer base {
+  body {
+    font-family: var(--font-display);
+    @apply bg-background-light dark:bg-background-dark text-gray-900 dark:text-white;
+  }
+}
