@@ -22,11 +22,19 @@
   --radius-2xl: 1rem;
 
   --background-image-field-texture: linear-gradient(rgba(20, 17, 24, 0.92), rgba(20, 17, 24, 0.95)), url('https://images.unsplash.com/photo-1555862124-a4ebf04cd250?q=80&w=2000&auto=format&fit=crop');
+
+  /* Dashboard Specific Colors from playerdashboard.html */
+  --color-dz-purple: #9333ea;
+  --color-dz-gray-light: #f3f4f6;
+  --color-dz-green-black: #102216;
+  --color-dz-navy: #0f172a;
+  --color-dz-green-dark: #581c87;
+  --color-dz-gray-soft: #f9fafb;
 }
 
 @layer base {
   body {
     font-family: var(--font-display);
-    @apply bg-background-light dark:bg-background-dark text-gray-900 dark:text-white;
+    @apply bg-background-light dark:bg-background-dark text-gray-900 dark:text-white selection:bg-primary selection:text-white;
   }
 }

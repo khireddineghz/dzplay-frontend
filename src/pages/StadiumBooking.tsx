@@ -1,12 +1,10 @@
-import { Navbar } from "../components/layout/Navbar";
 import { Button } from "../components/ui/Button";
 import { Input } from "../components/ui/Input";
+import { DashboardLayout } from "../components/dashboard/DashboardLayout";
 
 export default function StadiumBooking() {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col">
-      <Navbar />
-      
+    <DashboardLayout>
       <main className="flex-1 w-full max-w-[800px] mx-auto px-4 md:px-10 py-12">
         <div className="bg-surface-light dark:bg-surface-dark border border-gray-200 dark:border-surface-dark-highlight rounded-2xl p-6 md:p-10 shadow-xl">
             
@@ -93,6 +91,6 @@ export default function StadiumBooking() {
             </form>
         </div>
       </main>
-    </div>
+    </DashboardLayout>
   );
 }

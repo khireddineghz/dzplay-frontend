@@ -1,5 +1,5 @@
-import { Navbar } from "../components/layout/Navbar";
 import { TeamCard, type TeamCardProps } from "../components/shared/TeamCard";
+import { DashboardLayout } from "../components/dashboard/DashboardLayout";
 
 const TEAMS: TeamCardProps[] = [
   {
@@ -61,24 +61,20 @@ const TEAMS: TeamCardProps[] = [
 
 export default function FindOpponents() {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col">
-      <Navbar />
-      <main className="flex-1 bg-field-texture bg-cover bg-center bg-fixed w-full">
-        <div className="layout-container flex h-full flex-col">
-          <div className="px-4 md:px-10 lg:px-40 py-8 flex flex-1 justify-center">
-            <div className="flex flex-col w-full max-w-[1200px] flex-1 gap-8">
+    <DashboardLayout>
+      <div className="space-y-8">
               {/* Page Heading */}
-              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between animate-fade-in-up">
+              <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                 <div className="flex flex-col gap-2">
-                  <h1 className="text-white text-4xl md:text-5xl font-black leading-tight tracking-[-0.033em]">
-                    Find Your <span className="text-primary">Next Opponent</span>
-                  </h1>
-                  <p className="text-text-secondary text-base md:text-lg font-normal max-w-2xl">
+                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">
+                    Find Opponents
+                  </h2>
+                  <p className="text-slate-500 dark:text-slate-400 mt-1">
                     Browse teams across Algeria, check skill levels, and
                     schedule your next match. It's time to play.
                   </p>
                 </div>
-                <button className="mt-4 md:mt-0 bg-surface-dark hover:bg-surface-dark-highlight border border-surface-dark-highlight text-white px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all">
+                <button className="mt-4 md:mt-0 bg-primary hover:bg-primary-dark text-white px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition-all">
                   <span className="material-symbols-outlined text-[20px]">
                     add
                   </span>
@@ -87,16 +83,16 @@ export default function FindOpponents() {
               </div>
 
               {/* Search & Filters Toolbar */}
-              <div className="bg-surface-dark/80 backdrop-blur-sm border border-surface-dark-highlight p-4 rounded-xl flex flex-col md:flex-row gap-4 items-center shadow-lg">
+              <div className="bg-slate-100 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 p-4 rounded-xl flex flex-col md:flex-row gap-4 items-center shadow-sm">
                 {/* Search Bar */}
                 <div className="w-full md:flex-1 relative">
                   <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <span className="material-symbols-outlined text-text-secondary">
+                    <span className="material-symbols-outlined text-slate-400">
                       search
                     </span>
                   </div>
                   <input
-                    className="w-full bg-background-dark/50 text-white border-none rounded-lg py-3 pl-10 pr-4 placeholder:text-text-secondary focus:ring-2 focus:ring-primary focus:outline-none transition-shadow"
+                    className="w-full bg-white dark:bg-slate-700 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-600 rounded-lg py-3 pl-10 pr-4 placeholder:text-slate-400 focus:ring-2 focus:ring-primary focus:outline-none transition-shadow"
                     placeholder="Search by team name..."
                     type="text"
                   />
@@ -105,27 +101,27 @@ export default function FindOpponents() {
                 <div className="flex flex-wrap gap-2 w-full md:w-auto">
                   {/* Location Filter */}
                   <div className="relative group">
-                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-background-dark/50 hover:bg-surface-dark-highlight px-4 text-white transition-colors border border-surface-dark-highlight/50 min-w-[160px]">
+                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 px-4 text-slate-900 dark:text-white transition-colors border border-slate-200 dark:border-slate-600 min-w-[160px]">
                       <span className="text-sm font-medium">All Wilayas</span>
-                      <span className="material-symbols-outlined text-[20px] text-text-secondary">
+                      <span className="material-symbols-outlined text-[20px] text-slate-400">
                         expand_more
                       </span>
                     </button>
                   </div>
                   {/* Skill Level Filter */}
                   <div className="relative group">
-                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-background-dark/50 hover:bg-surface-dark-highlight px-4 text-white transition-colors border border-surface-dark-highlight/50 min-w-[140px]">
+                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 px-4 text-slate-900 dark:text-white transition-colors border border-slate-200 dark:border-slate-600 min-w-[140px]">
                       <span className="text-sm font-medium">Any Level</span>
-                      <span className="material-symbols-outlined text-[20px] text-text-secondary">
+                      <span className="material-symbols-outlined text-[20px] text-slate-400">
                         expand_more
                       </span>
                     </button>
                   </div>
                   {/* Date Filter */}
                   <div className="relative group">
-                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-background-dark/50 hover:bg-surface-dark-highlight px-4 text-white transition-colors border border-surface-dark-highlight/50">
+                    <button className="flex h-11 items-center justify-between gap-x-2 rounded-lg bg-white dark:bg-slate-700 hover:bg-slate-50 dark:hover:bg-slate-600 px-4 text-slate-900 dark:text-white transition-colors border border-slate-200 dark:border-slate-600">
                       <span className="text-sm font-medium">Availability</span>
-                      <span className="material-symbols-outlined text-[20px] text-text-secondary">
+                      <span className="material-symbols-outlined text-[20px] text-slate-400">
                         calendar_today
                       </span>
                     </button>
@@ -134,15 +130,12 @@ export default function FindOpponents() {
               </div>
 
               {/* Results Grid */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 pb-12">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {TEAMS.map((team, index) => (
                   <TeamCard key={index} {...team} />
                 ))}
               </div>
-            </div>
-          </div>
-        </div>
-      </main>
-    </div>
+      </div>
+    </DashboardLayout>
   );
 }

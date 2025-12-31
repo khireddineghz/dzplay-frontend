@@ -5,6 +5,10 @@ import FindOpponents from "./pages/FindOpponents";
 import PlayerDashboard from "./pages/PlayerDashboard";
 import StadiumDetails from "./pages/StadiumDetails";
 import StadiumBooking from "./pages/StadiumBooking";
+import MyTeam from "./pages/MyTeam";
+import MyBookings from "./pages/MyBookings";
+import Stats from "./pages/Stats";
+import Settings from "./pages/Settings";
 
 function App() {
   return (
@@ -16,6 +20,10 @@ function App() {
         <Route path="/dashboard" element={<PlayerDashboard />} />
         <Route path="/stadiums/details" element={<StadiumDetails />} />
         <Route path="/stadiums/book" element={<StadiumBooking />} />
+        <Route path="/my-team" element={<MyTeam />} />
+        <Route path="/my-bookings" element={<MyBookings />} />
+        <Route path="/stats" element={<Stats />} />
+        <Route path="/settings" element={<Settings />} />
         <Route path="/" element={<Navigate to="/login" replace />} />
       </Routes>
     </Router>

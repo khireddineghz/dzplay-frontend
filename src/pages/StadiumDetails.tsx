@@ -1,11 +1,9 @@
-import { Navbar } from "../components/layout/Navbar";
 import { Button } from "../components/ui/Button";
+import { DashboardLayout } from "../components/dashboard/DashboardLayout";
 
 export default function StadiumDetails() {
   return (
-    <div className="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col">
-      <Navbar />
-      
+    <DashboardLayout>
       {/* Hero Section */}
       <div className="relative h-[400px] w-full">
         <div 
@@ -116,6 +114,6 @@ export default function StadiumDetails() {
         </div>
 
       </main>
-    </div>
+    </DashboardLayout>
   );
 }
