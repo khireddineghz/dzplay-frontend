@@ -1,6 +1,83 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+
+interface Stadium {
+  id: number;
+  name: string;
+  location: string;
+  price: number;
+  rating: number;
+  imageUrl: string;
+  available: boolean;
+}
 
 export default function Home() {
+  const navigate = useNavigate();
+
+  const handleViewDetails = (stadiumId: number) => {
+    navigate(`/stadiums/details/${stadiumId}`);
+  };
+
+  // Stadium data - same as StadiumBooking page
+  const stadiums: Stadium[] = [
+    {
+      id: 1,
+      name: 'El Bahia Stadium',
+      location: '123 Rue de la Liberté, Oran',
+      price: 3500,
+      rating: 4.8,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuA_ut-V0iRHhFV6K3YUqGBBiQV_u_wuESKlvtEZy-3QjyXAzpAAnLs6O5QGGwk1HeHhg6hBQ4zsXBrnqFhrygsMTsgN_NFQDQgXOtfjpfq0n57DpG86tfnbhf5puQ6Dm7MZAvSOWqsjDqLHY6RqCAQ4lFb530C01DUN7kyItFApvcSaOHiEek4H29ixhL589bM2h6uaInFc20t9aXpBKpDOjkHhdGcPaY2YIiF9j8l8vg-zfbUWuWXXLhbOeXD68WpFgMoSOt4TKrE',
+      available: true,
+    },
+    {
+      id: 2,
+      name: 'Stade Municipal Constantine',
+      location: 'El Khroub, Constantine',
+      price: 3200,
+      rating: 4.9,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDUk34azHB1yf4TEFtyHu1vIyl260Sjw4omNDlarp55ERQfvDaDs7ZTm7Keuo2wDcO47U2-kRldLkZ2CObdsUNS2SQa4mKEXYuEa-n1mzPWxXwYWQvxO8TPttqBmsD4PziNG4j9xPdVj7hhWN-bOdGIoMfZd9sZdy3NEE03NvZQdB9wBMnASqxKr0bhgVBpuPYGGW8bJOI29gm_SChZEfCyVbBoeZY3eoM6-1YdhSHC67H1MOf93mwmFR_hRLb63lHs_hlWd32JPz8',
+      available: true,
+    },
+    {
+      id: 3,
+      name: 'Arena Sportiva Algiers',
+      location: 'Ben Aknoun, Algiers',
+      price: 4000,
+      rating: 4.7,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBj6d732HJaRUKUXYlxmH8icFy2BIj4IxTaCRORcoP9SdadwR-1j2xpEpztdQqOuMLBZM0CfJlX1ZJfEKhQe2FwrzbhY9EmnZLaxvDaFPjUarPn4LO8c_hov8NFm1ERIHY0j112MfKjpM-sTBjWIHp48a7Xs3UkFd9kXuP_zJm1E0fZkgezDEOikTtctQooBPQW_8mQUjeAJSRgL97BC8-CzXeL_oXYq0LJaXI3NsEW3B4K3IkN_tsz3X-2tbGk83oH9_mAMrqtnqI',
+      available: false,
+    },
+    {
+      id: 4,
+      name: 'Setif Sports Complex',
+      location: 'Park Mall Area, Setif',
+      price: 2800,
+      rating: 4.5,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuBoYIWGoiLuy13rmQe-KHoq92MCimDFZzSedi4AGRjNoMaQjNzTNY3IbIpYe0pq81HDu7R4wAXCCSbeOv5R5A3uWS5hkGtJWWW4qvnYlKsbFitwOcCIuhZYtapGqk7d6V8LbiwH68BdQldeSp0q00cZgJjc4kOkHfauDeJ4PUXAjUzUEBrEn6YIFVZr49qrZw7hcxpgNDhP5w_eBuxPVEx661S0SCqrs2T9UGSxnM6Szt5-VT8TPlOQECVQ_6sQ9QU7C-u3dyHz54g',
+      available: true,
+    },
+    {
+      id: 5,
+      name: 'Annaba Football Arena',
+      location: 'Annaba City Center',
+      price: 3800,
+      rating: 4.6,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuAq43nYnyBGCvlkMVOYb8VMW3FvAuB_u3eXcp0Y6dpHlPTf40s4POgx6EcGJHRT3yKcm2hM2G6Wi8yhqDHFsTWnoIkOgXeLKZIuImt38zfA4J7vKg7pHKA-WZEitwbdk0-axSr0zbt1qj84n5pXeXGQQqjNHnKcciw--enrmAKQUn_zIJev4O3i1EitQXv9jYJje69WvYVKj6-5HN3SlEivQShdyP_J1S2UF9t6wf6qOPvXRWxhr7go_objgwP3PDYHT98ggh83fRw',
+      available: true,
+    },
+    {
+      id: 6,
+      name: 'Tipaza Beach Stadium',
+      location: 'Chenoua, Tipaza',
+      price: 3000,
+      rating: 4.9,
+      imageUrl: 'https://lh3.googleusercontent.com/aida-public/AB6AXuDyhM_dQGes7ZZ2KffX2ZYB8rRB9onxKS87w2yFbE2dW5A-H0M_CLS-4sdtZV_Eun4O-cAGmLjNhKjs4s-1i768yRXD1qajG8hcZV3_lZSniikF-WCHkKc2-dnosERVBK0-LKwUrNatQdvqtcjh9tPnECDM_KQ3MTvxlmZ1AQogZv4B6srXafQQECVoUMWAP1l9A2SFH3YjcbXrn9G_xak2koQgWoIoL50vEPAq6dUedUGx8XLg3HUCqkkmXcN_8TXcpdqu4e9Y-YE',
+      available: true,
+    },
+  ];
+
+  // Display only first 3 stadiums on home page
+  const featuredStadiums = stadiums.slice(0, 3);
+
   return (
     <div className="bg-background-light dark:bg-background-dark font-display text-[#141118] dark:text-white overflow-x-hidden selection:bg-primary selection:text-white">
       {/* Navbar */}
@@ -303,76 +380,50 @@ export default function Home() {
             <div className="flex justify-between items-end mb-10">
               <div>
                 <h2 className="text-3xl font-bold text-gray-900 dark:text-white">Trending Pitches</h2>
-                <p className="text-gray-600 dark:text-gray-400 mt-2">Booked frequently this week in Algiers</p>
+                <p className="text-gray-600 dark:text-gray-400 mt-2">Booked frequently this week in Algeria</p>
               </div>
               <Link to="/stadiums/book" className="hidden sm:flex items-center text-primary font-bold hover:underline">
                 View All <span className="material-symbols-outlined ml-1 text-lg">arrow_forward</span>
               </Link>
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* Card 1 */}
-              <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark shadow-sm hover:shadow-xl transition-all duration-300">
-                <div className="aspect-video w-full overflow-hidden">
-                  <img alt="Stadium 1" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Indoor soccer field with artificial turf" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAVnHfWjaq8Q27KJU-WsneGo8PGh_ry0qarlBdwXtPC6Ewm4Rqrcu3AFz3ftqsYCpRyRTkZi4noTwhLxo9owb_Xv10MIB4pdpjb0IqU4Iw64uulSHilSTeuRl6O-eyp_AYpXBNh12O_nM0KX_JJNpmh_wsLTjNwMdEaUlJnULEy31hDu4Cfzpfy9N25X1PGn_gnhMGwz5UzbVHLsmR69sKJjCNWWnOaIsvWQj3em51GSn7czIGtWI2s4V8ikZfa_iLDxl-GwcqEQNo" />
-                </div>
-                <div className="p-5 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Arena 5 - Kouba</h3>
-                    <div className="flex items-center bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-bold text-yellow-700 dark:text-yellow-400">
-                      <span className="material-symbols-outlined text-xs mr-1">star</span> 4.8
+            <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
+              {featuredStadiums.map((stadium) => (
+                <div key={stadium.id} className="group flex flex-col rounded-xl bg-card-light dark:bg-card-dark shadow-sm hover:shadow-lg transition-all border border-slate-100 dark:border-slate-800 overflow-hidden">
+                  <div 
+                    className="h-48 bg-cover bg-center relative" 
+                    style={{ backgroundImage: `url('${stadium.imageUrl}')` }}
+                  >
+                    <div className="absolute top-3 right-3 bg-white/95 dark:bg-black/80 px-2.5 py-1 rounded-md text-xs font-bold flex items-center gap-1 shadow-sm">
+                      <span className="material-symbols-outlined text-yellow-500 text-sm filled">star</span> {stadium.rating}
+                    </div>
+                    {stadium.available && (
+                      <div className="absolute bottom-3 left-3 bg-primary/90 text-white px-2.5 py-1 rounded-md text-xs font-medium">
+                        Available Now
+                      </div>
+                    )}
+                  </div>
+                  <div className="p-4 flex flex-col gap-3 flex-1">
+                    <div>
+                      <h3 className="text-lg font-bold text-[#1e1b24] dark:text-white group-hover:text-primary transition-colors">{stadium.name}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center gap-1 mt-1">
+                        <span className="material-symbols-outlined text-[18px]">location_on</span> {stadium.location}
+                      </p>
+                    </div>
+                    <div className="mt-auto pt-3 border-t border-slate-100 dark:border-slate-800 flex items-center justify-between">
+                      <div>
+                        <span className="text-primary font-bold text-xl">{stadium.price} DZD</span>
+                        <span className="text-xs text-gray-400 font-medium">/ hour</span>
+                      </div>
+                      <button 
+                        onClick={() => handleViewDetails(stadium.id)}
+                        className="bg-primary hover:bg-primary-dark text-white px-4 py-2 rounded-lg text-sm font-medium transition-colors"
+                      >
+                        View Details
+                      </button>
                     </div>
                   </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center mb-4">
-                    <span className="material-symbols-outlined text-sm mr-1">location_on</span> Kouba, Algiers
-                  </p>
-                  <div className="mt-auto flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-4">
-                    <span className="text-sm font-bold text-primary">3000 DA / Hour</span>
-                    <button className="rounded-lg bg-gray-900 dark:bg-white px-3 py-1.5 text-xs font-bold text-white dark:text-gray-900 hover:opacity-80">Book</button>
-                  </div>
                 </div>
-              </div>
-              {/* Card 2 */}
-              <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark shadow-sm hover:shadow-xl transition-all duration-300">
-                <div className="aspect-video w-full overflow-hidden">
-                  <img alt="Stadium 2" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="Outdoor soccer field during sunset" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDugvCHuEOchoqbEGcNBdpq-PJ4lJVzOnb3oslAy1hfcrH5pfbadOyz0sKVdaSQ-HoROgYmK-vsIs_7KW5qvVaumnvgV4IDqflAdV3Rq5vEUGpZqPfhyNVBQ4BVQzOMjOl15M_E8DM7TbYwwFsmt9UdhWAErkdtNulNE3uVxyTye49oAdj-rKKPdARYXGqe-NgpBiTaUCmCGOeF3QQf8bpI6sAdGYJ-_paN_IiINnHUYl_MN1vFE8qk8psufepaDTix3yaZhTxzspo" />
-                </div>
-                <div className="p-5 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">El Biar Complex</h3>
-                    <div className="flex items-center bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-bold text-yellow-700 dark:text-yellow-400">
-                      <span className="material-symbols-outlined text-xs mr-1">star</span> 4.5
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center mb-4">
-                    <span className="material-symbols-outlined text-sm mr-1">location_on</span> El Biar, Algiers
-                  </p>
-                  <div className="mt-auto flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-4">
-                    <span className="text-sm font-bold text-primary">4000 DA / Hour</span>
-                    <button className="rounded-lg bg-gray-900 dark:bg-white px-3 py-1.5 text-xs font-bold text-white dark:text-gray-900 hover:opacity-80">Book</button>
-                  </div>
-                </div>
-              </div>
-              {/* Card 3 */}
-              <div className="group relative flex flex-col overflow-hidden rounded-xl border border-gray-200 dark:border-gray-700 bg-white dark:bg-surface-dark shadow-sm hover:shadow-xl transition-all duration-300">
-                <div className="aspect-video w-full overflow-hidden">
-                  <img alt="Stadium 3" className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110" data-alt="High quality green turf texture close up" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDaMA6oikghv_sQNpJwSD7u7DFUMVtULxeP9PqnZjYfkG0dDNdIuDZyJ04hqpZT84DBqjB9LPx-5VpYO99mQZqw0HW--rAjQu8H_ZQgmPZ46dMZmnNnxOu_qJ4hhuIRNRapPmjZt6mfwWTv3K0ZGmpU6gbczh9n_xRLmnj6taH_iy08yjzBUvLzjirKUSe0-pnY9wyBnL0JD_Qw8v64GZDEFu0oC8fWGo2rca9DyDRfaafMZik7QGJbU9VeOpqloOIsdlZImBHlsI0" />
-                </div>
-                <div className="p-5 flex-1 flex flex-col">
-                  <div className="flex justify-between items-start mb-2">
-                    <h3 className="text-lg font-bold text-gray-900 dark:text-white">Green Field Hydra</h3>
-                    <div className="flex items-center bg-yellow-100 dark:bg-yellow-900/30 px-1.5 py-0.5 rounded text-xs font-bold text-yellow-700 dark:text-yellow-400">
-                      <span className="material-symbols-outlined text-xs mr-1">star</span> 4.9
-                    </div>
-                  </div>
-                  <p className="text-sm text-gray-500 dark:text-gray-400 flex items-center mb-4">
-                    <span className="material-symbols-outlined text-sm mr-1">location_on</span> Hydra, Algiers
-                  </p>
-                  <div className="mt-auto flex items-center justify-between border-t border-gray-100 dark:border-gray-700 pt-4">
-                    <span className="text-sm font-bold text-primary">5000 DA / Hour</span>
-                    <button className="rounded-lg bg-gray-900 dark:bg-white px-3 py-1.5 text-xs font-bold text-white dark:text-gray-900 hover:opacity-80">Book</button>
-                  </div>
-                </div>
-              </div>
+              ))}
             </div>
             <div className="mt-8 text-center sm:hidden">
               <Link to="/stadiums/book" className="inline-flex items-center text-primary font-bold hover:underline">

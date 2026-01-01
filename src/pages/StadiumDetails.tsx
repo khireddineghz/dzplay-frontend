@@ -1,6 +1,15 @@
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from 'react';
+import authService from '../services/auth.service';
+import { UserAvatar } from '../components/shared/UserAvatar';
 
 const StadiumDetails = () => {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+  }, []);
+
   return (
     <div className="font-['Lexend'] text-[#1e293b] dark:text-white transition-colors duration-200 min-h-screen flex flex-col relative bg-background-light dark:bg-background-dark">
 
@@ -15,10 +24,16 @@ const StadiumDetails = () => {
             <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" to="/stadiums/book">Stadiums</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary" to="/login">Login</Link>
-            <Link to="/signup" className="flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all">
-              Join Now
-            </Link>
+            {isAuthenticated ? (
+              <UserAvatar />
+            ) : (
+              <>
+                <Link className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary" to="/login">Login</Link>
+                <Link to="/signup" className="flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all">
+                  Join Now
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

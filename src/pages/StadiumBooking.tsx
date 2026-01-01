@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
+import authService from '../services/auth.service';
+import { UserAvatar } from '../components/shared/UserAvatar';
 
 interface Stadium {
   id: number;
@@ -20,6 +22,11 @@ const StadiumBooking: React.FC = () => {
   const [showPriceMenu, setShowPriceMenu] = useState(false);
   const [showRatingMenu, setShowRatingMenu] = useState(false);
   const [showAvailabilityMenu, setShowAvailabilityMenu] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    setIsAuthenticated(authService.isAuthenticated());
+  }, []);
 
   const handleViewDetails = (stadiumId: number) => {
     navigate(`/stadiums/details/${stadiumId}`);
@@ -125,10 +132,16 @@ const StadiumBooking: React.FC = () => {
             <Link className="text-sm font-medium text-gray-700 hover:text-primary dark:text-gray-300 dark:hover:text-primary transition-colors" to="/stadiums/book">Stadiums</Link>
           </nav>
           <div className="flex items-center gap-4">
-            <Link className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary" to="/login">Login</Link>
-            <Link to="/signup" className="flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all">
-              Join Now
-            </Link>
+            {isAuthenticated ? (
+              <UserAvatar />
+            ) : (
+              <>
+                <Link className="hidden sm:block text-sm font-medium text-gray-700 dark:text-gray-300 hover:text-primary" to="/login">Login</Link>
+                <Link to="/signup" className="flex h-9 items-center justify-center rounded-lg bg-primary px-4 text-sm font-bold text-white shadow-lg shadow-primary/20 hover:bg-primary-dark transition-all">
+                  Join Now
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </header>

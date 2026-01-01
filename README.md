@@ -551,7 +551,7 @@ npm run dev -- --port 5174
 #### API Connection Refused
 
 ```bash
-Error: Connection refused to http://localhost:3000
+Error: Connection refused to https://dzplay-backend.onrender.com
 ```
 
 **Solution:** Ensure backend server is running:

@@ -1,6 +1,6 @@
 // API client configuration and utilities
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:3000';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'https://dzplay-backend.onrender.com';
 
 export interface ApiError {
   error: string;
