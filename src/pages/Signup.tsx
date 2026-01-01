@@ -472,7 +472,7 @@ export default function Signup() {
            <a href="#" className="hover:text-gray-900 dark:hover:text-white transition-colors">Privacy Policy</a>
            <a href="#" className="hover:text-gray-900 dark:hover:text-white transition-colors">Help Center</a>
         </div>
-        <p>© 2024 DZPlay. All rights reserved.</p>
+        <p>© 2026 DZPlay. All rights reserved.</p>
       </footer>
     </div>
   );
