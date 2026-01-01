@@ -1,9 +1,26 @@
-import { useState } from "react";
-import { Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { Sidebar } from "./Sidebar";
+import authService, { type User } from "../../services/auth.service";
 
 export function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const navigate = useNavigate();
+  
+  useEffect(() => {
+    const currentUser = authService.getCurrentUser();
+    setUser(currentUser);
+  }, []);
+  
+  const handleLogout = () => {
+    authService.logout();
+    navigate('/login');
+  };
+  
+  const userName = user?.user_metadata?.full_name || user?.email || 'User';
+  const userRole = authService.getUserRole() === 'player' ? 'Player' : 'Stadium Owner';
+  const userInitials = userName.split(' ').map(n => n.charAt(0)).join('').toUpperCase().slice(0, 2);
 
   return (
     <div className="bg-background-light dark:bg-background-dark text-slate-800 dark:text-slate-100 h-screen flex overflow-hidden font-display">
@@ -48,8 +65,8 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               className="flex items-center gap-2 cursor-pointer hover:opacity-80"
               onClick={() => setIsProfileOpen(true)}
             >
-              <div className="size-8 rounded-full bg-slate-200 overflow-hidden">
-                <img alt="User" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGfX16r3MahUlEADRbTU_0GaknDmaCDEKUeqrKEr5ivkaTQs42yrrAdDJGPdpAo_vNyQkTW-qg_6tZMAHVfWqtoCcotXyDK45kxxbVIm4MnGyFQaftZW7FestJEL-Bas5-FK9lz7Gma-hyu0cQ2TWUmDkXOL0RV0BqNLjJxGF4fGvd3PspITTR6lawHuChmi_5v5A3ZaqqisAJhKAxyHPr1Yxmm6jFK6aIy7M7hf1SoFCLsisLF-sj60UpsL6VhHDrywVcneI0bRA"/>
+              <div className="size-8 rounded-full bg-primary flex items-center justify-center text-white text-xs font-bold">
+                {userInitials}
               </div>
             </div>
           </div>
@@ -74,11 +91,12 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="flex flex-col items-center mb-8">
-                <div className="size-24 rounded-full bg-slate-200 overflow-hidden mb-4 border-4 border-white dark:border-slate-700 shadow-lg">
-                  <img alt="User" className="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuBGfX16r3MahUlEADRbTU_0GaknDmaCDEKUeqrKEr5ivkaTQs42yrrAdDJGPdpAo_vNyQkTW-qg_6tZMAHVfWqtoCcotXyDK45kxxbVIm4MnGyFQaftZW7FestJEL-Bas5-FK9lz7Gma-hyu0cQ2TWUmDkXOL0RV0BqNLjJxGF4fGvd3PspITTR6lawHuChmi_5v5A3ZaqqisAJhKAxyHPr1Yxmm6jFK6aIy7M7hf1SoFCLsisLF-sj60UpsL6VhHDrywVcneI0bRA"/>
+                <div className="size-24 rounded-full bg-primary flex items-center justify-center text-white text-3xl font-bold mb-4 border-4 border-white dark:border-slate-700 shadow-lg">
+                  {userInitials}
                 </div>
-                <h2 className="text-xl font-bold text-dz-navy dark:text-white">Riyad Mahrez</h2>
-                <p className="text-slate-500 dark:text-slate-400">Pro Player</p>
+                <h2 className="text-xl font-bold text-dz-navy dark:text-white">{userName}</h2>
+                <p className="text-slate-500 dark:text-slate-400">{userRole}</p>
+                <p className="text-xs text-slate-400 mt-1">{user?.email}</p>
               </div>
 
               <div className="flex-1 space-y-2">
@@ -101,10 +119,10 @@ export function DashboardLayout({ children }: { children: React.ReactNode }) {
               </div>
 
               <div className="pt-6 border-t border-slate-100 dark:border-slate-800">
-                <Link to="/login" className="flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 text-red-500 font-medium transition-colors">
+                <button onClick={handleLogout} className="w-full flex items-center gap-3 px-4 py-3 rounded-xl hover:bg-red-50 dark:hover:bg-red-900/20 text-red-500 font-medium transition-colors">
                   <span className="material-symbols-outlined">logout</span>
                   Sign Out
-                </Link>
+                </button>
               </div>
             </div>
           </>

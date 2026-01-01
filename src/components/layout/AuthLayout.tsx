@@ -63,10 +63,7 @@ export function AuthLayout({ children }: AuthLayoutProps) {
         {/* Header (Logo + Help) */}
         <div className="p-6 lg:p-12 flex justify-between items-center z-10">
             <div className="flex items-center gap-3">
-                <div className="size-10 bg-primary rounded-lg flex items-center justify-center text-white shadow-lg shadow-primary/30">
-                    <span className="material-symbols-outlined text-2xl">sports_soccer</span>
-                </div>
-                <h1 className="text-xl font-bold tracking-tight text-gray-900 dark:text-white">DZPlay</h1>
+                <img src="/logo.png" alt="DZPlay" className="h-24 w-auto object-contain" />
             </div>
             <a className="text-sm font-semibold text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors" href="#">
                 Help

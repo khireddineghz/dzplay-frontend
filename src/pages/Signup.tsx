@@ -1,9 +1,195 @@
-import { useState } from "react";
+import { useState, type FormEvent } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import { Input } from "../components/ui/Input";
-import { Link } from "react-router-dom";
+import authService from "../services/auth.service";
+import {
+  validateEmail,
+  validatePassword,
+  validatePhoneNumber,
+  validateFullName,
+  normalizePhoneNumber,
+} from "../lib/validation";
+import type { ApiError } from "../lib/api";
 
 export default function Signup() {
+  const navigate = useNavigate();
+  
+  // Form state
   const [role, setRole] = useState<'player' | 'stadium'>('player');
+  const [fullName, setFullName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  
+  // Error states
+  const [fullNameError, setFullNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [phoneNumberError, setPhoneNumberError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+  const [generalError, setGeneralError] = useState("");
+  const [successMessage, setSuccessMessage] = useState("");
+  
+  // Loading state
+  const [isLoading, setIsLoading] = useState(false);
+
+  // Handle input changes
+  const handleFullNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setFullName(e.target.value);
+    setFullNameError("");
+    setGeneralError("");
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(e.target.value);
+    setEmailError("");
+    setGeneralError("");
+  };
+
+  const handlePhoneNumberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoneNumber(e.target.value);
+    setPhoneNumberError("");
+    setGeneralError("");
+  };
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setPassword(e.target.value);
+    setPasswordError("");
+    setGeneralError("");
+  };
+
+  // Validate form
+  const validateForm = (): boolean => {
+    let isValid = true;
+
+    // Validate full name
+    const fullNameValidation = validateFullName(fullName);
+    if (!fullNameValidation.isValid) {
+      setFullNameError(fullNameValidation.error || "Invalid name");
+      isValid = false;
+    }
+
+    // Validate email
+    const emailValidation = validateEmail(email);
+    if (!emailValidation.isValid) {
+      setEmailError(emailValidation.error || "Invalid email");
+      isValid = false;
+    }
+
+    // Validate phone number
+    const phoneValidation = validatePhoneNumber(phoneNumber);
+    if (!phoneValidation.isValid) {
+      setPhoneNumberError(phoneValidation.error || "Invalid phone number");
+      isValid = false;
+    }
+
+    // Validate password
+    const passwordValidation = validatePassword(password);
+    if (!passwordValidation.isValid) {
+      setPasswordError(passwordValidation.error || "Invalid password");
+      isValid = false;
+    }
+
+    return isValid;
+  };
+
+  // Handle form submission
+  const handleSubmit = async (e: FormEvent) => {
+    e.preventDefault();
+    
+    // Reset messages
+    setGeneralError("");
+    setSuccessMessage("");
+    
+    // Validate form
+    if (!validateForm()) {
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Normalize phone number to +213 format
+      const normalizedPhone = normalizePhoneNumber(phoneNumber);
+      
+      console.log('Signup attempt:', {
+        email,
+        fullName,
+        phoneNumber: normalizedPhone,
+        role: role === 'player' ? 'player' : 'stadiumowner',
+      });
+      
+      const response = await authService.signup({
+        email,
+        password,
+        fullName,
+        phoneNumber: normalizedPhone,
+        role: role === 'player' ? 'player' : 'stadiumowner',
+      });
+
+      console.log('Signup successful:', response);
+
+      // Show success message
+      setSuccessMessage(response.message || "Account created successfully!");
+      
+      // Navigate to appropriate dashboard after a short delay
+      setTimeout(() => {
+        if (response.role === "player") {
+          navigate("/player-dashboard");
+        } else if (response.role === "stadiumowner") {
+          navigate("/stadium-owner");
+        } else {
+          navigate("/");
+        }
+      }, 2000);
+    } catch (error) {
+      const apiError = error as ApiError;
+      console.error('Signup error:', apiError);
+      setGeneralError(apiError.error || "Signup failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Google OAuth
+  const handleGoogleSignup = async () => {
+    // Validate role is selected
+    if (!role) {
+      setGeneralError("Please select a role (Player or Stadium Owner) before signing up with Google.");
+      return;
+    }
+
+    setIsLoading(true);
+    setGeneralError("");
+
+    try {
+      // Use the selected role for Google signup
+      const roleValue = role === 'player' ? 'player' : 'stadiumowner';
+      const response = await authService.signInWithGoogle(roleValue);
+      // Redirect to Google OAuth page
+      window.location.href = response.url;
+    } catch (error) {
+      const apiError = error as ApiError;
+      setGeneralError(apiError.error || "Failed to initiate Google signup.");
+      setIsLoading(false);
+    }
+  };
+
+  // Handle Facebook OAuth
+  const handleFacebookSignup = async () => {
+    setIsLoading(true);
+    setGeneralError("");
+
+    try {
+      // TODO: Implement Facebook OAuth backend endpoint
+      setGeneralError("Facebook signup coming soon!");
+      setIsLoading(false);
+    } catch (error) {
+      const apiError = error as ApiError;
+      setGeneralError(apiError.error || "Failed to initiate Facebook signup.");
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="min-h-screen relative flex flex-col font-display bg-gray-100">
@@ -21,10 +207,7 @@ export default function Signup() {
       <header className="relative z-10 w-full px-6 py-6 flex justify-between items-center max-w-7xl mx-auto">
         {/* Logo */}
         <div className="flex items-center gap-3">
-           <div className="size-10 bg-primary rounded-xl flex items-center justify-center text-white shadow-lg shadow-primary/30">
-               <span className="material-symbols-outlined text-2xl">sports_soccer</span>
-           </div>
-           <span className="text-2xl font-bold text-gray-900 dark:text-white tracking-tight">DZPlay</span>
+           <img src="/logo.png" alt="DZPlay" className="h-24 w-auto object-contain" />
         </div>
         {/* Back to Home */}
         <Link to="/" className="text-sm font-bold text-gray-900 dark:text-white hover:text-primary transition-colors">
@@ -87,7 +270,21 @@ export default function Signup() {
                        <p className="text-gray-500 dark:text-gray-400 text-lg">Join our community today.</p>
                    </div>
 
-                   <form className="space-y-6">
+                   {generalError && (
+                     <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-xl flex items-start gap-3">
+                       <span className="material-symbols-outlined text-red-500 text-[20px] mt-0.5">error</span>
+                       <p className="text-sm text-red-600 dark:text-red-400 flex-1">{generalError}</p>
+                     </div>
+                   )}
+
+                   {successMessage && (
+                     <div className="mb-6 p-4 bg-green-50 dark:bg-green-900/20 border border-green-200 dark:border-green-800 rounded-xl flex items-start gap-3">
+                       <span className="material-symbols-outlined text-green-500 text-[20px] mt-0.5">check_circle</span>
+                       <p className="text-sm text-green-600 dark:text-green-400 flex-1">{successMessage}</p>
+                     </div>
+                   )}
+
+                   <form onSubmit={handleSubmit} className="space-y-6">
                        {/* Role Toggle */}
                        <div className="space-y-3">
                            <label className="text-sm font-bold text-gray-900 dark:text-white block">I want to...</label>
@@ -95,7 +292,8 @@ export default function Signup() {
                                <button 
                                  type="button"
                                  onClick={() => setRole('player')}
-                                 className={`h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-3 transition-all duration-200 relative group ${
+                                 disabled={isLoading}
+                                 className={`h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-3 transition-all duration-200 relative group disabled:opacity-50 disabled:cursor-not-allowed ${
                                      role === 'player' 
                                      ? 'border-primary bg-primary/5 text-primary shadow-sm' 
                                      : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50 text-gray-600 bg-white'
@@ -112,7 +310,8 @@ export default function Signup() {
                                <button 
                                  type="button"
                                  onClick={() => setRole('stadium')}
-                                 className={`h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-3 transition-all duration-200 relative group ${
+                                 disabled={isLoading}
+                                 className={`h-24 rounded-2xl border-2 flex flex-col items-center justify-center gap-3 transition-all duration-200 relative group disabled:opacity-50 disabled:cursor-not-allowed ${
                                      role === 'stadium' 
                                      ? 'border-primary bg-primary/5 text-primary shadow-sm' 
                                      : 'border-gray-100 hover:border-gray-200 hover:bg-gray-50 text-gray-600 bg-white'
@@ -135,7 +334,10 @@ export default function Signup() {
                            <Input 
                                icon={<span className="material-symbols-outlined text-[20px]">person</span>} 
                                placeholder="e.g. Riyad Mahrez" 
-                               className="h-12 bg-white"
+                               value={fullName}
+                               onChange={handleFullNameChange}
+                               error={fullNameError}
+                               disabled={isLoading}
                            />
                        </div>
 
@@ -143,9 +345,14 @@ export default function Signup() {
                        <div className="space-y-2">
                            <label className="text-sm font-bold text-gray-900 dark:text-white ml-1">Email Address</label>
                            <Input 
+                               type="email"
                                icon={<span className="material-symbols-outlined text-[20px]">mail</span>} 
                                placeholder="name@example.com" 
                                className="h-12 bg-white"
+                               value={email}
+                               onChange={handleEmailChange}
+                               error={emailError}
+                               disabled={isLoading}
                            />
                        </div>
                        
@@ -157,7 +364,14 @@ export default function Signup() {
                                    <span className="mr-2 text-lg">🇩🇿</span> +213
                                </div>
                                <div className="flex-1">
-                                   <Input placeholder="5 XX XX XX XX" className="h-14 bg-white" />
+                                   <Input 
+                                     placeholder="5 XX XX XX XX" 
+                                     className="h-14 bg-white" 
+                                     value={phoneNumber}
+                                     onChange={handlePhoneNumberChange}
+                                     error={phoneNumberError}
+                                     disabled={isLoading}
+                                   />
                                </div>
                            </div>
                        </div>
@@ -166,22 +380,45 @@ export default function Signup() {
                        <div className="space-y-2">
                            <label className="text-sm font-bold text-gray-900 dark:text-white ml-1">Password</label>
                            <Input 
-                               type="password"
+                               type={showPassword ? "text" : "password"}
                                icon={<span className="material-symbols-outlined text-[20px]">lock</span>} 
                                placeholder="••••••••" 
                                className="h-12 bg-white"
+                               value={password}
+                               onChange={handlePasswordChange}
+                               error={passwordError}
+                               disabled={isLoading}
                                rightElement={
-                                   <button type="button" className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex items-center justify-center">
-                                       <span className="material-symbols-outlined text-[20px]">visibility_off</span>
+                                   <button 
+                                     type="button" 
+                                     onClick={() => setShowPassword(!showPassword)}
+                                     className="hover:text-gray-600 dark:hover:text-gray-300 transition-colors flex items-center justify-center"
+                                   >
+                                       <span className="material-symbols-outlined text-[20px]">
+                                         {showPassword ? "visibility_off" : "visibility"}
+                                       </span>
                                    </button>
                                }
                            />
-                           <p className="text-xs text-gray-500 ml-1">Must be at least 8 characters.</p>
+                           {!passwordError && (
+                             <p className="text-xs text-gray-500 ml-1">Must be at least 8 characters with letters and numbers.</p>
+                           )}
                        </div>
 
                        {/* Submit */}
-                       <button className="w-full h-14 bg-primary hover:bg-primary-dark text-white text-base font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 active:scale-[0.98] mt-2">
-                           Create Account
+                       <button 
+                         type="submit"
+                         disabled={isLoading}
+                         className="w-full h-14 bg-primary hover:bg-primary-dark text-white text-base font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/40 transition-all transform hover:-translate-y-0.5 active:scale-[0.98] mt-2 disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                       >
+                         {isLoading ? (
+                           <>
+                             <span className="animate-spin material-symbols-outlined text-[20px]">progress_activity</span>
+                             Creating Account...
+                           </>
+                         ) : (
+                           "Create Account"
+                         )}
                        </button>
 
                        {/* Socials Divider */}
@@ -192,7 +429,12 @@ export default function Signup() {
 
                        {/* Social Buttons */}
                        <div className="grid grid-cols-2 gap-4">
-                           <button type="button" className="flex items-center justify-center gap-3 h-12 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-200 font-bold text-sm">
+                           <button 
+                             type="button" 
+                             onClick={handleGoogleSignup}
+                             disabled={isLoading}
+                             className="flex items-center justify-center gap-2 h-12 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-200 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                           >
                                <svg className="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                     <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
                                     <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
@@ -201,9 +443,14 @@ export default function Signup() {
                                </svg>
                                Google
                            </button>
-                           <button type="button" className="flex items-center justify-center gap-3 h-12 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-200 font-bold text-sm">
-                               <svg className="w-5 h-5" fill="#1877F2" viewBox="0 0 24 24">
-                                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.791-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"></path>
+                           <button 
+                             type="button" 
+                             onClick={handleFacebookSignup}
+                             disabled={isLoading}
+                             className="flex items-center justify-center gap-2 h-12 border border-gray-200 dark:border-gray-700 rounded-xl hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors bg-white dark:bg-surface-dark text-gray-700 dark:text-gray-200 font-bold text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                           >
+                               <svg className="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2" xmlns="http://www.w3.org/2000/svg">
+                                   <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
                                </svg>
                                Facebook
                            </button>

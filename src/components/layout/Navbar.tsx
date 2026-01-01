@@ -10,10 +10,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b border-surface-dark-highlight bg-background-dark/95 backdrop-blur-md">
       <div className="px-6 md:px-10 lg:px-40 py-3 flex items-center justify-between">
         <Link to="/dashboard" className="flex items-center gap-4 text-white">
-          <div className="size-8 text-primary flex items-center justify-center">
-            <span className="material-symbols-outlined text-3xl">sports_soccer</span>
-          </div>
-          <h2 className="text-white text-xl font-bold leading-tight tracking-[-0.015em]">DZPlay</h2>
+          <img src="/logo.png" alt="DZPlay" className="h-24 w-auto object-contain" />
         </Link>
         <nav className="hidden md:flex flex-1 justify-center gap-8">
           <Link 
