@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import authService from '../services/auth.service';
 import { UserAvatar } from '../components/shared/UserAvatar';
+import { StadiumMap } from '../components/shared/StadiumMap';
 
 const StadiumDetails = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -181,21 +182,12 @@ const StadiumDetails = () => {
                   Where you'll be
                 </h2>
                 <p className="text-[#64748b] dark:text-gray-400 mb-4">123 Rue de la Liberté, Oran, Algeria</p>
-                <div className="w-full h-[320px] rounded-xl overflow-hidden relative bg-gray-200 dark:bg-gray-800 shadow-md">
-                  <div className="w-full h-full bg-cover bg-center" data-alt="Map showing the location of the stadium in Oran, Algeria" data-location="Oran, Algeria" style={{ backgroundImage: 'url("https://lh3.googleusercontent.com/aida-public/AB6AXuAgTCSumEkzQHsgyTj7xFb31d8U4-t8gELr-cOPIx9Y7IvZv7q-ST6c8wXpDeuPzjSQ9awUZ6iw29PZYSGPFyJjlqbryhW2TjbYHUXTYTHtW1GmDn33jD0bJSytcVyp99hwtGf0rUa7c9fTkksHonzOU9J5L5LUs0XeE_UbvYUeQgZ1TMSHoVoNNEWQZH6Z5ZfJXFmJhayUhV-HQ5ba8PlF1KjwQ_08qOuzT0y_YNokBJRVVUR5DuhwAAVBvxeg4uXkGRDyKEYGFyo")' }}></div>
-                  <div className="absolute inset-0 bg-black/10 flex items-center justify-center">
-                    <div className="bg-[#8b5cf6] text-white p-3 rounded-full shadow-xl shadow-purple-900/30 transform -translate-y-4 animate-bounce">
-                      <span className="material-symbols-outlined text-[32px] fill">location_on</span>
-                    </div>
-                  </div>
-                  <div className="absolute bottom-4 left-4 bg-white dark:bg-[#312e81] p-3 rounded-lg shadow-lg max-w-[200px]">
-                    <p className="text-xs font-bold text-[#1e293b] dark:text-white mb-1">El Bahia Stadium</p>
-                    <a className="text-xs text-[#8b5cf6] font-semibold hover:text-[#7c3aed] underline flex items-center gap-1" href="#">
-                      View on Google Maps
-                      <span className="material-symbols-outlined text-[14px]">open_in_new</span>
-                    </a>
-                  </div>
-                </div>
+                <StadiumMap 
+                  latitude={35.6976}
+                  longitude={-0.6337}
+                  stadiumName="El Bahia Stadium"
+                  address="123 Rue de la Liberté, Oran, Algeria"
+                />
               </section>
               <hr className="border-purple-100 dark:border-indigo-900" />
               <section>
