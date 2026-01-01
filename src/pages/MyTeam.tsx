@@ -205,21 +205,21 @@ function FormationView({ team, onBack }: { team: any, onBack: () => void }) {
         <div className="relative z-10 flex flex-col justify-between h-full gap-12">
           {/* Forwards */}
           <div className="flex justify-center gap-16 pt-8">
-            {forwards.map((player: any, idx: number) => (
+            {forwards.map((player: any) => (
               <FifaCard key={player.id} player={player} />
             ))}
           </div>
 
           {/* Midfielders */}
           <div className="flex justify-center gap-20">
-            {midfielders.map((player: any, idx: number) => (
+            {midfielders.map((player: any) => (
               <FifaCard key={player.id} player={player} />
             ))}
           </div>
 
           {/* Defenders */}
           <div className="flex justify-center gap-12">
-            {defenders.map((player: any, idx: number) => (
+            {defenders.map((player: any) => (
               <FifaCard key={player.id} player={player} />
             ))}
           </div>
